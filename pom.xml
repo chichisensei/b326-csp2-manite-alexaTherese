@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>RecordingStudioApp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!--
+    This is a bridge. It lets Java do load AND manipulate
+
+        Think of a library in a real library:
+        - groupId: com.mysql = Which company / shelf - Who made it?  Oracle/MySQL team
+        - artifactId: mysql-connector-j= Book name - Which book on that shelf?
+        - version: 9.7.0 - Edition
+        - scope: compile - When do you need it? compile is need it always; test is only for testing; runtime is only when running not coding;
+
+        This dependency was copied daw???? from Maven Central.
+        website: mvnrepository.com
+    -->
+    <dependencies>
+        <!-- MySQL JDBC Connector Dependency -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.7.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>
