@@ -8,11 +8,17 @@ public class Artist {
     public Artist(int id) {
         this.id = id;
     }
+    
+    
 
     public Artist(int id, String name) {
         this.id = id;
         this.name = name;
     }
+
+    public Artist(String name) {
+    }
+
 
     public int getId() {
         return id;

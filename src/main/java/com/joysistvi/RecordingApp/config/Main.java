@@ -33,7 +33,7 @@ public class Main extends DatabaseConnection{
                 }
                 case 2 -> {
                     System.out.println();
-                    artistDao.readAllArtist();
+//                    artistDao.readAllArtist();
                     System.out.println();
                     return;
                 }
