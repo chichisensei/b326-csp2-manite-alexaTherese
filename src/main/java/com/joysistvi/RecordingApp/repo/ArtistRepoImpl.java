@@ -51,12 +51,10 @@ public class ArtistRepoImpl implements ArtistRepo {
             prep.setInt(1, id);
             ResultSet res = prep.executeQuery();
 
-
-            while(res.next()) {
-
+            if (res.next()) {
                 return new Artist(res.getInt("id"), res.getString("name"));
-
             }
+
 
 
         } catch (SQLException e) {

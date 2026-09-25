@@ -1,6 +1,7 @@
 package com.joysistvi.RecordingApp.dao;
 
 import com.joysistvi.RecordingApp.config.DatabaseConnection;
+import com.joysistvi.RecordingApp.model.Artist;
 
 
 import java.sql.*;
@@ -21,7 +22,7 @@ public class ArtistDao extends DatabaseConnection {
 
     // CRUD OPERATION
 
-    public void readAllArtist() {
+    public void getAllArtist() {
         String query = "SELECT * FROM artists";
 
         // create a statement
@@ -46,6 +47,34 @@ public class ArtistDao extends DatabaseConnection {
         }
     }
 
+    public void getArtistById(int id) {
+        String query = "SELECT * FROM artists WHERE id = ?";
+
+        try (Connection conn = db.connect();
+             PreparedStatement prep = conn.prepareStatement(query)) {
+
+            prep.setInt(1, id);
+            ResultSet res = prep.executeQuery();
+
+            // HEADER
+            System.out.printf("%-3s | %-20s%n", "ID", "NAME");
+            System.out.println("-".repeat(23));
+
+            if (res.next()) {
+                int userId = res.getInt("id");
+                String name = res.getString("name");
+                System.out.printf("%-3d | %-20s%n", userId, name);
+            }
+
+
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+
+    }
+
     public void createArtist(String name) {
         // validation
         if (name == null || name.trim().isEmpty()) {
@@ -66,7 +95,7 @@ public class ArtistDao extends DatabaseConnection {
 
             // synchronization
             System.out.println(rows > 0 ? "Artist added successfully." : "Failed to add artist.");
-            readAllArtist();
+            getAllArtist();
 
 
         } catch(SQLException e) {
@@ -84,7 +113,7 @@ public class ArtistDao extends DatabaseConnection {
             System.out.println("Artist name is required");
             return;
         }
-        readAllArtist();
+        getAllArtist();
 
         String query = "UPDATE songs SET name = ? WHERE id = ?";
 
@@ -98,7 +127,7 @@ public class ArtistDao extends DatabaseConnection {
             int rows = prep.executeUpdate();
 
             System.out.println(rows > 0 ? "Artist update successfully!" : "Failed to update!");
-            readAllArtist();
+            getAllArtist();
         } catch (SQLException e) {
             System.err.println("Update Artist: " + e.getMessage());
         }
@@ -117,7 +146,7 @@ public class ArtistDao extends DatabaseConnection {
             int rows = prep.executeUpdate();
 
             System.out.println(rows > 0 ? "Artist archived successfully!" : "Failed to archive!");
-            readAllArtist();
+            getAllArtist();
         } catch(SQLException e) {
             System.err.println("Archive Artist: " + e.getMessage());
         }
@@ -135,14 +164,14 @@ public class ArtistDao extends DatabaseConnection {
             int rows = prep.executeUpdate();
 
             System.out.println(rows > 0 ? "Artist restored successfully!" : "Failed to restore!");
-            readAllArtist();
+            getAllArtist();
         } catch(SQLException e) {
             System.err.println("Restore Artist: " + e.getMessage());
         }
     }
 
     public void deleteArtist(int id) {
-        readAllArtist();
+        getAllArtist();
         String query = "DELETE FROM artists WHERE id = ?";
 
         try(Connection conn = db.connect();
@@ -154,7 +183,7 @@ public class ArtistDao extends DatabaseConnection {
             int rows = prep.executeUpdate();
 
             System.out.println(rows > 0 ? "Artist archived successfully!" : "Failed to archive!");
-            readAllArtist();
+            getAllArtist();
         } catch(SQLException e) {
             System.err.println("Delete Artist: " + e.getMessage());
         }

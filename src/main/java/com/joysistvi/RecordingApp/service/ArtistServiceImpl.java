@@ -35,6 +35,7 @@ public class ArtistServiceImpl implements ArtistService{
             System.out.println("Artist not found.");
         }
 
+        return artist;
     }
 
     @Override
