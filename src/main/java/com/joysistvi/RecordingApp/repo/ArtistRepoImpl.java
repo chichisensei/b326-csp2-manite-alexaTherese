@@ -112,7 +112,7 @@ public class ArtistRepoImpl implements ArtistRepo {
 
     @Override
     public boolean updateArtist(Artist artist) {
-        String query = "UPDATE songs SET name = ? WHERE id = ?";
+        String query = "UPDATE artists SET name = ? WHERE id = ?";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)){

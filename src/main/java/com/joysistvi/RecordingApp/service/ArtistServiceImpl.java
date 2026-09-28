@@ -53,7 +53,7 @@ public class ArtistServiceImpl implements ArtistService{
             System.out.println("Artist name is required!");
             return false;
         }
-        return true;
+        return artistRepo.createArtist(artist);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ArtistServiceImpl implements ArtistService{
             System.out.println("ID is required!");
             return false;
         }
-        return true;
+        return artistRepo.updateArtist(artist);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ArtistServiceImpl implements ArtistService{
             System.out.println("Artist's ID is required!");
             return false;
         }
-        return true;
+        return artistRepo.archiveArtist(id);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ArtistServiceImpl implements ArtistService{
             System.out.println("Artist's ID is required!");
             return false;
         }
-        return true;
+        return artistRepo.restoreArtist(id);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ArtistServiceImpl implements ArtistService{
             System.out.println("Artist's ID is required!");
             return false;
         }
-        return true;
+        return artistRepo.deleteArtist(id);
     }
 
     @Override

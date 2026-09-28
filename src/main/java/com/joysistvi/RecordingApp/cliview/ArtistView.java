@@ -73,6 +73,12 @@ public class ArtistView {
         printArtists(artists);
     }
 
+    private void viewAllArchivedArtist() {
+        System.out.println("\n----- View All Artists -----");
+        List<Artist> artists = artistController.handleReadAllArchivedArtist();
+        printArtists(artists);
+    }
+
     private void searchArtist() {
         System.out.println("\n----- Search Artists -----");
         System.out.println("Enter name: ");
@@ -106,6 +112,7 @@ public class ArtistView {
 
         Artist current = artistController.handleGetArtistById(id);
 
+
         if (current == null) {
             System.out.println("No artist found with ID " + id + ". Please check the ID & try again!");
             return;
@@ -119,7 +126,7 @@ public class ArtistView {
 
         Artist artist = new Artist(id, name);
 
-        boolean isSuccess = artistController.handleCreateArtist(artist);
+        boolean isSuccess = artistController.handleUpdateArtist(artist);
         System.out.println(isSuccess ? "Artist added successfully" : "Failed to add artist!");
 
         if (isSuccess) { // read-after-write / refresh-after-mutation
@@ -129,6 +136,59 @@ public class ArtistView {
 
 
 
+    }
+
+    private void archiveArtist() {
+        System.out.println("\n----- Archived Artists ----- ");
+
+        viewAllArtists();
+
+        System.out.println("Artist ID to archive: ");
+        int id = readInt();
+
+        boolean is_success = artistController.handleArchiveArtist(id);
+        System.out.println(is_success ? "Artist archived successfully" : "Failed to archive");
+
+        if (is_success) {
+            System.out.println();
+            viewAllArtists();
+        }
+    }
+
+    private void restoreArchive() {
+        System.out.println("\n----- Archived Artists ----- ");
+
+        viewAllArchivedArtist();
+
+        System.out.println("Artist ID to restore: ");
+        int id = readInt();
+
+        boolean is_success = artistController.handleRestoreArtist(id);
+
+        System.out.println(is_success ? "Artist restored successfully" : "Failed to restore");
+
+        if (is_success) {
+            System.out.println();
+            viewAllArtists();
+        }
+    }
+
+    private void deleteArtist() {
+        System.out.println("\n----- Delete Artists ----- ");
+
+        viewAllArtists();
+
+        System.out.println("Artist ID to delete: ");
+        int id = readInt();
+
+        boolean is_success = artistController.handleDeleteArtist(id);
+
+        System.out.println(is_success ? "Artist deleted successfully!" : "Failed to delete!");
+
+        if (is_success) {
+            System.out.println();
+            viewAllArtists();
+        }
     }
 
     public void printArtists(List<Artist> artists) {
