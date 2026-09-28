@@ -20,7 +20,13 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public List<Artist> getAllArtists() {
-        return artistRepo.getAllArtists();
+        List<Artist> artists = artistRepo.getAllArtists();
+        if (artists == null) {
+            System.out.println("Artist is empty.");
+            return List.of();
+        }
+
+        return artists;
     }
 
     @Override
@@ -97,14 +103,14 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public List<Artist> readAllArchivedArtist() {
+        List<Artist> artists = artistRepo.readAllArchivedArtist();
 
-
-        if (artistRepo.readAllArchivedArtist().isEmpty()) {
+        if (artists.isEmpty()) {
             System.out.println("Archive is empty!");
             return List.of();
         }
 
-        return artistRepo.readAllArchivedArtist();
+        return artists;
 
 
     }

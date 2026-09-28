@@ -24,13 +24,13 @@ public class AlbumView {
             choice = promptChoice();
 
             switch (choice) {
-                case 1 -> // view all albums
-                case 2 -> // search album
-                case 3 -> // add album
-                case 4 -> // update album
-                case 5 -> // archive album
-                case 6 -> // delete an album
-                case 7 -> // restore an album
+//                case 1 -> // view all albums
+//                case 2 -> // search album
+//                case 3 -> // add album
+//                case 4 -> // update album
+//                case 5 -> // archive album
+//                case 6 -> // delete an album
+//                case 7 -> // restore an album
                 default -> System.out.println("Invalid choice! Please enter a valid integer!");
             }
 

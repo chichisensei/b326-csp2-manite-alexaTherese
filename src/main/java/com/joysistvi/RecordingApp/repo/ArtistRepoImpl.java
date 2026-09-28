@@ -18,7 +18,7 @@ public class ArtistRepoImpl implements ArtistRepo {
     @Override
     public List<Artist> getAllArtists() {
         List<Artist> artists = new ArrayList<>();
-        String query = "SELECT * FROM artists";
+        String query = "SELECT * FROM artists WHERE is_archived = 0";
 
         // create a statement
         // try with resources
@@ -43,7 +43,7 @@ public class ArtistRepoImpl implements ArtistRepo {
     public Artist getArtistById(int id) {
         String name = "";
         Artist artist = new Artist(id, name);
-        String query = "SELECT * FROM artists WHERE id = ?";
+        String query = "SELECT * FROM artists WHERE id = ? AND is_archived = 0";
 
         try (Connection conn = db.connect();
              PreparedStatement prep = conn.prepareStatement(query)) {
@@ -67,7 +67,7 @@ public class ArtistRepoImpl implements ArtistRepo {
     @Override
     public List<Artist> searchArtist(String keyword) {
         List<Artist> artists = new ArrayList<>();
-        String query = "SELECT * FROM artists WHERE name LIKE ?";
+        String query = "SELECT * FROM artists WHERE name LIKE ? AND is_archived = 0";
 
         // create a statement
         // try with resources
@@ -112,7 +112,7 @@ public class ArtistRepoImpl implements ArtistRepo {
 
     @Override
     public boolean updateArtist(Artist artist) {
-        String query = "UPDATE artists SET name = ? WHERE id = ?";
+        String query = "UPDATE artists SET name = ? WHERE id = ? AND is_archived = 0";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)){
@@ -155,7 +155,7 @@ public class ArtistRepoImpl implements ArtistRepo {
 
     @Override
     public boolean restoreArtist(int id) {
-        String query = "UPDATE artists SET is_archived = 0 WHERE id = ?";
+        String query = "UPDATE artists SET is_archived = 0 WHERE id = ? AND is_archived = 1";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)) {

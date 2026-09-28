@@ -34,7 +34,7 @@ public class SongRepoImpl implements SongRepo {
             return rows > 0;
 
         } catch(SQLException e) {
-            System.err.println("Create Song" + e.getMessage());
+            System.err.println("Create Song: " + e.getMessage());
         }
 
         return false;
@@ -62,8 +62,7 @@ public class SongRepoImpl implements SongRepo {
 
     @Override
     public Song getSongById(int id) {
-        Song song = new Song(id);
-        String query = "SELECT * FROM songs WHERE id = ?";
+        String query = "SELECT * FROM songs WHERE id = ? AND is_archived = 0";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)) {
@@ -78,19 +77,19 @@ public class SongRepoImpl implements SongRepo {
         } catch(SQLException e) {
             System.err.println("Get Song By Id: " + e.getMessage());
         }
-        return song;
+        return null;
     }
 
     @Override
     public List<Song> getSongByKeyword(String keyword) {
 
         List<Song> songs = new ArrayList<>();
-        String query = "SELECT * FROM songs WHERE name LIKE ?";
+        String query = "SELECT * FROM songs WHERE title LIKE ? AND is_archived = 0";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)) {
 
-            prep.setString(1, "%" + "name" + "%");
+            prep.setString(1, "%" + keyword + "%");
 
             ResultSet res = prep.executeQuery();
 
@@ -107,7 +106,7 @@ public class SongRepoImpl implements SongRepo {
     @Override
     public List<Song> getSongByArtistId(Artist artist) {
         List<Song> songs = new ArrayList<>();
-        String query = "SELECT artists.name, songs.title, songs.length, songs.genre FROM songs JOIN albums ON songs.album_id = albums.id JOIN artists ON albums.artist_id = artists.id WHERE artists.id = ?";
+        String query = "SELECT artists.name, songs.title, songs.length, songs.genre FROM songs JOIN albums ON songs.album_id = albums.id JOIN artists ON albums.artist_id = artists.id WHERE artists.id = ? AND is_archived = 0";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)) {
@@ -117,7 +116,10 @@ public class SongRepoImpl implements SongRepo {
             ResultSet res = prep.executeQuery();
 
             while(res.next()) {
-                songs.add(new Song(res.getString(artist.getName()), res.getString("songs.title"), res.getString("songs.length"), res.getString("songs.genre")));
+                songs.add(new Song(res.getString("artists.name"),
+                        res.getString("songs.title"),
+                        res.getString("songs.length"),
+                        res.getString("songs.genre")));
             }
 
         } catch(SQLException e) {
@@ -127,19 +129,22 @@ public class SongRepoImpl implements SongRepo {
     }
 
     @Override
-    public List<Song> getSongByArtistKeyword(Artist keyword) {
+    public List<Song> getSongByArtistKeyword(String keyword) {
         List<Song> songs = new ArrayList<>();
 
-        String query = "SELECT artists.name, songs.title, songs.length, songs.genre FROM songs JOIN albums ON songs.album_id = albums.id JOIN artists ON albums.artist_id = artists.id WHERE artists.name LIKE ?";
+        String query = "SELECT artists.name, songs.title, songs.length, songs.genre FROM songs JOIN albums ON songs.album_id = albums.id JOIN artists ON albums.artist_id = artists.id WHERE artists.name LIKE ? AND is_archived = 0";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)) {
 
-            prep.setString(1, "%" + keyword.getName() + "%");
+            prep.setString(1, "%" + keyword + "%");
             ResultSet res = prep.executeQuery();
 
             while(res.next()) {
-                songs.add(new Song(res.getString(keyword.getName()), res.getString("songs.title"), res.getString("songs.length"), res.getString("songs.genre")));
+                songs.add(new Song(res.getString("artists.name"),
+                        res.getString("songs.title"),
+                        res.getString("songs.length"),
+                        res.getString("songs.genre")));
             }
 
         } catch(SQLException e) {
@@ -150,7 +155,7 @@ public class SongRepoImpl implements SongRepo {
 
     @Override
     public boolean updateSong(Song song) {
-        String query = "UPDATE songs SET title = ?, length = ?, genre = ? WHERE id = ?";
+        String query = "UPDATE songs SET title = ?, length = ?, genre = ? WHERE id = ? AND is_archived = 0";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)) {
@@ -213,7 +218,7 @@ public class SongRepoImpl implements SongRepo {
 
     @Override
     public boolean restoreArchivedSong(Song song) {
-        String query = "UPDATE songs SET is_archived = 0 WHERE id = ?";
+        String query = "UPDATE songs SET is_archived = 0 WHERE id = ? AND is_archived = 1";
 
         try(Connection conn = db.connect();
             PreparedStatement prep = conn.prepareStatement(query)) {

@@ -15,48 +15,48 @@ public class SongController {
         this.songService = songService;
     }
 
-    public boolean createSong(Song song, Album album) {
+    public boolean handleCreateSong(Song song, Album album) {
         return songService.createSong(song, album);
     }
 
-    public List<Song> getAllSongs() {
+    public List<Song> handleGetAllSongs() {
         return songService.getAllSongs();
     }
 
 
-    public Song getSongById(int id) {
+    public Song handleGetSongById(int id) {
         return songService.getSongById(id);
     }
 
-    public List<Song> getSongByKeyword(String keyword) {
+    public List<Song> handleGetSongByKeyword(String keyword) {
         return songService.getSongByKeyword(keyword);
     }
 
-    public List<Song> getSongByArtistId(Artist artist) {
+    public List<Song> handleGetSongByArtistId(Artist artist) {
         return songService.getSongByArtistId(artist);
     }
 
-    public List<Song> getSongByArtistKeyword(Artist keyword) {
+    public List<Song> handleGetSongByArtistKeyword(String keyword) {
         return songService.getSongByArtistKeyword(keyword);
     }
 
-    public boolean updateSong(Song song) {
+    public boolean handleUpdateSong(Song song) {
         return songService.updateSong(song);
     }
 
-    public boolean archiveSong(Song song) {
+    public boolean handleArchiveSong(Song song) {
         return songService.archiveSong(song);
     }
 
-    public List<Song> readAllArchivedSongs() {
+    public List<Song> handleReadAllArchivedSongs() {
         return songService.readAllArchivedSongs();
     }
 
-    public boolean restoreArchivedSong(Song song) {
+    public boolean handleRestoreArchivedSong(Song song) {
         return songService.restoreArchivedSong(song);
     }
 
-    public boolean deleteSong(Song song) {
+    public boolean handleDeleteSong(Song song) {
         return songService.deleteSong(song);
     }
 }

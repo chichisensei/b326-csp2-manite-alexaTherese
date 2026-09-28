@@ -6,10 +6,17 @@ public class Song {
     private String length;
     private String genre;
     private String name;
+    private int album_id;
 
 
     public Song(int id, String title, String length, String genre) {
         this.id = id;
+        this.title = title;
+        this.length = length;
+        this.genre = genre;
+    }
+
+    public Song(String title, String length, String genre) {
         this.title = title;
         this.length = length;
         this.genre = genre;
@@ -24,6 +31,22 @@ public class Song {
         this.title = title;
         this.length = length;
         this.genre = genre;
+    }
+
+    public int getAlbum_id() {
+        return album_id;
+    }
+
+    public void setAlbum_id(int album_id) {
+        this.album_id = album_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {

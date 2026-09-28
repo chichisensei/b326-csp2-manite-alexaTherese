@@ -34,7 +34,11 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> getAllSongs() {
-        return songRepo.getAllSongs();
+        List<Song> songs = songRepo.getAllSongs();
+        if (songs == null || songs.isEmpty()) {
+            return List.of();
+        }
+        return songs;
     }
 
     @Override
@@ -74,7 +78,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> getSongByArtistKeyword(Artist keyword) {
+    public List<Song> getSongByArtistKeyword(String keyword) {
         if (keyword == null) {
             System.out.println("Artist name is required");
             return List.of();
@@ -113,11 +117,12 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> readAllArchivedSongs() {
-        if (songRepo.readAllArchivedSongs().isEmpty()) {
+        List<Song> songs = songRepo.readAllArchivedSongs();
+        if (songs.isEmpty()) {
             return List.of();
         }
 
-        return songRepo.readAllArchivedSongs();
+        return songs;
     }
 
     @Override

@@ -1,106 +1,92 @@
 package com.joysistvi.RecordingApp.cliview;
 
-import com.joysistvi.RecordingApp.controller.SongController;
-import com.joysistvi.RecordingApp.model.Album;
-import com.joysistvi.RecordingApp.model.Artist;
-import com.joysistvi.RecordingApp.model.Song;
+import com.joysistvi.RecordingApp.controller.UserController;
 import com.joysistvi.RecordingApp.model.User;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Scanner;
 
-public class SongView {
-    private final SongController songController;
+public class UserView {
+
+    private final UserController userController;
     private final Scanner input;
-    private final User user;
 
     private static final String RESET = "\033[0m";
     private static final String RED = "\033[31m";
     private static final String GOLD = "\033[33m";
     private static final String DIM = "\033[2m";
 
-    public SongView(SongController songController, Scanner input, User user) {
-        this.songController = songController;
+    public UserView(UserController userController, Scanner input) {
+        this.userController = userController;
         this.input = input;
-        this.user = user;
     }
 
-    public void run() {
+    public User run() {
         int choice;
-        String menuBannerUser = """
-                【１】View All Songs
-                【２】Search Songs
-                【０】Back
-                """;
-        String menuBannerAdmin = """
-                【１】View All Songs
-                【２】Search Songs
-                【０】Add Song
-                【１】Update Song
-                【２】Delete Song
-                【０】Archive Song
-                【１】Restore Song
-                【２】View Archived Songs
-                【０】Back
-                """;
+
         do {
             clearScreen();
-            if(!user.isIs_admin()) {
-                displayMenu("Chipotify", menuBannerUser);
-            } else {
-                displayMenu("Chipotify", menuBannerAdmin);
-            }
+
+            // menubanner
+            String loginBanner = """
+                    【１】 Sign Up
+                    【２】 Log In
+                    【０】 Exit
+                    """;
+
+            displayMenu("Chipotify", loginBanner);
 
             choice = readInt(input, "Enter choice");
 
-            switch (choice) {
-                case 1 ->
+            switch(choice) {
+                case 1 -> signUpUser();
+                case 2 -> {
+                    User user = loginUser();
+
+                    if (user != null) return user;
+                }
+                case 0 -> System.out.println("Thank you for using Chipotify!");
+                default -> System.out.println("Invalid input! Please try again!");
             }
 
 
 
-        } while();
+
+        } while(choice != 0);
+
+        return null;
     }
 
-    private void addSong(Song song, Album album) {
-        displayMenu("Chipotify", "Add Song");
-        System.out.println();
+    private void signUpUser() {
+        User user = new User();
+        user.setUserName(promptInput(input,"Enter username"));
+        user.setPassword(promptInput(input,"Enter password"));
 
-        String title = promptInput(input, "Enter title");
-        String length = promptInput(input, "Enter length");
-        String genre = promptInput(input, "Enter genre");
+        boolean signUpSuccess = userController.handleCreateUser(user);
 
-        Song song2 = new Song(title, length, genre);
-        boolean isSuccess = songController.handleCreateSong(song2, album);
+        System.out.println(signUpSuccess ? "Account created successfully!" : "Failed to create account!");
 
-        System.out.println(isSuccess ? "Song added successfully" : "Failed to add song!");
 
-        if(isSuccess) {
-            System.out.println();
-            displayMenu("Chipotify");
+    }
+
+    private User loginUser() {
+        User credentials = new User();
+        credentials.setUserName(promptInput(input,"Enter username"));
+        credentials.setPassword(promptInput(input,"Enter password"));
+
+        User user = userController.handleLoginUser(credentials);
+        if (user != null) {
+            System.out.println("Login Successfully!");
+            return user;
         }
 
-
+        System.out.println("Invalid username or password!");
+        return null;
     }
 
-    public List<Song> getAllSongs() {
-        return songController.handleGetAllSongs();
-    }
 
-    public void searchSongById() {
-        displayMenu("Chipotify", "Search Song By Id");
 
-        int choice = readInt(input, "Song id");
-        Song song = songController.handleGetSongById(choice);
-        printArtist
-    }
 
-    private void viewAllArchivedArtist() {
-        System.out.println("\n----- View All Artists -----");
-        List<Artist> artists = artistController.handleReadAllArchivedArtist();
-
-    }
 
     private void clearScreen() {
         System.out.println("\033[H\033[2J");

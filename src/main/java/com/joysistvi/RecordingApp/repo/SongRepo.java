@@ -13,7 +13,7 @@ public interface SongRepo {
     Song getSongById(int id);
     List<Song> getSongByKeyword(String keyword);
     List<Song> getSongByArtistId(Artist artist);
-    List<Song> getSongByArtistKeyword(Artist keyword);
+    List<Song> getSongByArtistKeyword(String keyword);
     boolean updateSong(Song song);
     boolean archiveSong(Song song);
     List<Song> readAllArchivedSongs();
